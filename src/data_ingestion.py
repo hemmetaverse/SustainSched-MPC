@@ -3,8 +3,9 @@ import requests
 import pandas as pd
 from datetime import datetime
 import argparse
+import numpy as np
 
-ELECTRICITY_MAPS_API_URL = "https://api.electricitymaps.com/v3/carbon-intensity/history"
+ELECTRICITY_MAPS_API_URL = "https://api.electricitymaps.com/v3/carbon-intensity/past"
 
 # Map paper regions to realistic Electricity Maps Zone Keys
 REGION_MAPPING = {
@@ -13,36 +14,55 @@ REGION_MAPPING = {
     "AS-East": "JP-TK"        # Tokyo (Fossil-dominated)
 }
 
-def fetch_carbon_intensity(zone: str, auth_token: str) -> pd.DataFrame:
+def fetch_carbon_intensity(zone: str, auth_token: str, hours: int = 24) -> pd.DataFrame:
     """
-    Fetches historical carbon intensity data from Electricity Maps API.
-    Note: Requires an Electricity Maps API free-tier token.
+    Fetches historical carbon intensity data from Electricity Maps API v3/past endpoint.
+    Pulls data for the past `hours` hours.
     """
     headers = {
         "auth-token": auth_token
     }
-    params = {
-        "zone": zone
-    }
     
-    response = requests.get(ELECTRICITY_MAPS_API_URL, headers=headers, params=params)
-    response.raise_for_status()
-    
-    data = response.json()
-    if 'history' not in data:
-        raise ValueError(f"Invalid API response for zone {zone}")
-        
     records = []
-    for entry in data['history']:
-        records.append({
-            'datetime': entry['datetime'],
-            'zone': entry['zone'],
-            'carbon_intensity': entry['carbonIntensity'] # gCO2eq/kWh
-        })
+    # Fetch data for the past `hours` hours
+    now = pd.Timestamp.now('UTC')
+    for h in range(hours):
+        target_time = now - pd.Timedelta(hours=h)
+        # format: YYYY-MM-DDTHH:MM
+        time_str = target_time.strftime('%Y-%m-%dT%H:%M')
         
+        params = {
+            "zone": zone,
+            "datetime": time_str
+        }
+        
+        response = requests.get(ELECTRICITY_MAPS_API_URL, headers=headers, params=params)
+        
+        if response.status_code == 200:
+            data = response.json()
+            ci = data.get('carbonIntensity')
+            try:
+                ci = float(ci) if ci is not None else np.nan
+            except (ValueError, TypeError):
+                ci = np.nan
+                
+            records.append({
+                'datetime': data.get('datetime'),
+                'zone': data.get('zone'),
+                'carbon_intensity': ci # gCO2eq/kWh
+            })
+        else:
+            print(f"Failed to fetch {time_str} for {zone}: {response.status_code}")
+            
     df = pd.DataFrame(records)
-    df['datetime'] = pd.to_datetime(df['datetime'])
-    df.set_index('datetime', inplace=True)
+    if not df.empty:
+        df['datetime'] = pd.to_datetime(df['datetime'])
+        df.set_index('datetime', inplace=True)
+        # Ensure carbon intensity column is float type
+        df['carbon_intensity'] = pd.to_numeric(df['carbon_intensity'], errors='coerce')
+        # If the whole column is nan, just return empty df or zeroed df
+        if df['carbon_intensity'].isna().all():
+            print("Warning: All carbon intensity values are NaN or missing.")
     return df
 
 def preprocess_and_interpolate(df: pd.DataFrame, target_interval_min: int = 5) -> pd.DataFrame:
@@ -55,7 +75,19 @@ def preprocess_and_interpolate(df: pd.DataFrame, target_interval_min: int = 5) -
     
     # Needs to be sorted before resampling
     df = df.sort_index()
+    # Ensure numerical structure before interpolating
+    df['carbon_intensity'] = pd.to_numeric(df['carbon_intensity'], errors='coerce')
+    
+    # Drop string columns before interpolation
+    if 'zone' in df.columns:
+        zone_val = df['zone'].iloc[0] if not df.empty else "Unknown"
+        df = df.drop(columns=['zone'])
+        
     resampled = df.resample(f'{target_interval_min}min').interpolate(method='linear')
+    
+    # Re-add the zone column if needed
+    resampled['zone'] = zone_val
+    
     return resampled
 
 def main(auth_token: str, output_dir: str):
