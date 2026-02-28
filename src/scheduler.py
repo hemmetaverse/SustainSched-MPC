@@ -16,6 +16,7 @@ class SustainSchedMPC:
         self.M_max = 5  # Max cross-region migrations per int.
 
     def schedule(self, current_slot: int, pending_jobs: List[Job],
+                 active_jobs: List[Job],
                  carbon_forecasts: Dict[str, List[float]], 
                  temp_forecasts: Dict[str, List[float]],
                  sigma_estimator: float, alpha: float = 1.0) -> Tuple[Dict, str]:
@@ -41,10 +42,10 @@ class SustainSchedMPC:
                                   for t in range(current_slot, current_slot + self.horizon)),
                                  cat='Binary')
         
-        # F[h_id][t] : Continuous DVFS frequency envelope relaxed in [1.2, 3.6]
-        F = pulp.LpVariable.dicts("F",
+        # F_eff[h_id][t] : Continuous DVFS frequency envelope: F_eff in [0, F_MAX]
+        F_eff = pulp.LpVariable.dicts("F_eff",
                                  ((h.id, t) for r in self.regions for h in r.hosts for t in range(current_slot, current_slot + self.horizon)),
-                                 lowBound=P_STATES[0], upBound=F_MAX)
+                                 lowBound=0.0, upBound=F_MAX)
                                  
         # S[h_id][t] : Binary Standby (1=active, 0=standby)
         S = pulp.LpVariable.dicts("S",
@@ -72,8 +73,13 @@ class SustainSchedMPC:
         # u_ht(j, h_id, t) -> 1 if job j is active on h at t
         def get_utilization(h_id, t):
             u_term = 0
-            # For each job, sum up their required resource if they started 
-            # within t-tau_bar <= start_time <= t
+            # Active jobs already placed
+            for j in active_jobs:
+                if j.assigned_host_id == h_id:
+                    # check if running
+                    if t < j.t_start + j.tau_bar:
+                        u_term += j.u_cpu
+            # Pending jobs being placed
             for j in jobs_to_schedule:
                 # Assuming deterministic tau_bar for capacity bounds
                 tau = int(j.tau_bar)
@@ -93,12 +99,16 @@ class SustainSchedMPC:
                     
                     u_ht = get_utilization(h.id, t)
                     
-                    # Capacity constraint: u_ht <= K_cpu * (F_ht / F_max)
-                    prob += u_ht <= h.K_cpu * S[h.id, t]
+                    # F_eff bounds based on Standby
+                    prob += F_eff[h.id, t] >= P_STATES[0] * S[h.id, t]
+                    prob += F_eff[h.id, t] <= F_MAX * S[h.id, t]
                     
-                    # We linearize the power: P_ht = S * P_idle + alpha * u_ht + beta * (F/F_max)
-                    # For simplicity in optimization, we'll approximate the bilinear `s_ht * P_idle` & active power directly
-                    P_ht_expr = S[h.id, t] * h.P_idle + h.alpha * u_ht + h.beta * (F[h.id, t] / F_MAX)
+                    # Capacity constraints
+                    prob += u_ht <= h.K_cpu * S[h.id, t]
+                    prob += u_ht <= h.K_cpu * (F_eff[h.id, t] / F_MAX)
+                    
+                    # We linearize the power: P_ht = S * P_idle + (1-S)*P_stby + alpha * u_ht + beta * (F_eff/F_max)
+                    P_ht_expr = S[h.id, t] * h.P_idle + (1 - S[h.id, t]) * h.P_stby + h.alpha * u_ht + h.beta * (F_eff[h.id, t] / F_MAX)
                     
                     amb_t = temp_forecasts[r.id][step]
                     
@@ -188,9 +198,17 @@ class SustainSchedMPC:
         for r in self.regions:
             for h in r.hosts:
                 # round the continuous F up to the nearest valid P_STATE
-                f_val = F[h.id, current_slot].value()
-                f_opt = min(P_STATES, key=lambda x: abs(x - f_val))
-                s_val = int(round(S[h.id, current_slot].value()))
-                decisions['f_states'][h.id] = {'f': f_opt, 's': s_val}
+                s_val = S[h.id, current_slot].value()
+                s_opt = int(round(s_val)) if s_val is not None else 1
+                
+                if s_opt == 1:
+                    f_val = F_eff[h.id, current_slot].value()
+                    if f_val is None: 
+                        f_val = F_MAX
+                    f_opt = min(P_STATES, key=lambda x: abs(x - f_val))
+                else:
+                    f_opt = F_MAX
+                    
+                decisions['f_states'][h.id] = {'f': f_opt, 's': s_opt}
 
         return decisions, "Optimal"

@@ -1,6 +1,7 @@
 import os
 import argparse
 from typing import List, Dict
+import numpy as np
 
 from .models import Host, Region, Job, P_STATES, F_MAX
 from .physics import calculate_host_power, update_host_temperature
@@ -60,7 +61,7 @@ def run_simulation(args):
         
         # Free completed jobs
         for j in active_jobs[:]:
-            if t >= j.t_start + j.actual_runtime:
+            if t >= j.t_start + int(np.ceil(j.actual_runtime)):
                 active_jobs.remove(j)
                 completed_jobs += 1
                 if t > j.d_j: # SLA miss
@@ -92,34 +93,34 @@ def run_simulation(args):
         t_forecast = {r: [temp_full[r][(t+k)%slots_per_day] for k in range(scheduler.horizon)] for r in ["US-West", "EU-Central", "AS-East"]}
         
         # 3 + 4. Optimization
-        if len(pending_jobs) > 0:
-            decisions, status = scheduler.schedule(
-                current_slot=t,
-                pending_jobs=pending_jobs,
-                carbon_forecasts=c_forecast,
-                temp_forecasts=t_forecast,
-                sigma_estimator=sigma_estimator
-            )
+        decisions, status = scheduler.schedule(
+            current_slot=t,
+            pending_jobs=pending_jobs,
+            active_jobs=active_jobs,
+            carbon_forecasts=c_forecast,
+            temp_forecasts=t_forecast,
+            sigma_estimator=sigma_estimator
+        )
             
-            # 5. Commit
-            if status == "Optimal" and decisions:
-                # Dispatch starting jobs for this exact slot
-                for alloc in decisions['starts']:
-                    if alloc['start_slot'] == t:
-                        j = next(job for job in pending_jobs if job.id == alloc['job_id'])
-                        j.t_start = t
-                        j.assigned_host_id = alloc['host'].id
-                        j.assigned_region = alloc['host'].region_id
-                        
-                        pending_jobs.remove(j)
-                        active_jobs.append(j)
-                        
-                # Update F and S states
-                for r in regions:
-                    for h in r.hosts:
-                        if h.id in decisions['f_states']:
-                            h.f_current = decisions['f_states'][h.id]['f']
-                            h.s_active = decisions['f_states'][h.id]['s']
+        # 5. Commit
+        if status == "Optimal" and decisions:
+            # Dispatch starting jobs for this exact slot
+            for alloc in decisions['starts']:
+                if alloc['start_slot'] == t:
+                    j = next(job for job in pending_jobs if job.id == alloc['job_id'])
+                    j.t_start = t
+                    j.assigned_host_id = alloc['host'].id
+                    j.assigned_region = alloc['host'].region_id
+                    
+                    pending_jobs.remove(j)
+                    active_jobs.append(j)
+                    
+            # Update F and S states
+            for r in regions:
+                for h in r.hosts:
+                    if h.id in decisions['f_states']:
+                        h.f_current = decisions['f_states'][h.id]['f']
+                        h.s_active = decisions['f_states'][h.id]['s']
                             
     # Final Metrics
     print("\n=== Eval Results ===")
