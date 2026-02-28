@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime
 import argparse
 
-ELECTRICITY_MAPS_API_URL = "https://api-access.electricitymaps.com/free-tier/carbon-intensity/history"
+ELECTRICITY_MAPS_API_URL = "https://api.electricitymaps.com/v3/carbon-intensity/history"
 
 # Map paper regions to realistic Electricity Maps Zone Keys
 REGION_MAPPING = {
