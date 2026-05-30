@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "days": 30,
+    "load": 2.5,
+    "seeds": [
+      42,
+      137,
+      271
+    ],
+    "tag": "m_CarbonOnly_a"
+  },
+  "results": {
+    "CarbonOnly": {
+      "energy_kwh_day": 4313.850336940674,
+      "co2e_kg_day": 1551.2688503649306,
+      "peak_temp": 83.88177050597018,
+      "hotspot_min_day": 912.4444444444445,
+      "sla_miss_pct": 55.27189157008046,
+      "sla_miss_batch_pct": 21.33564836446077,
+      "p95_queue_s": 600,
+      "overhead_s": 1.0,
+      "thermal_viol_pct": 47.42283950617284,
+      "jobs": 1381509,
+      "mean_util_pct": 66.13275668144159,
+      "peak_util_pct": 99.92343896255971,
+      "r0_mean_util": 61.75550441726981,
+      "r0_peak_util": 99.97425438660855,
+      "r1_mean_util": 77.54173608394008,
+      "r1_peak_util": 99.96337433672407,
+      "r2_mean_util": 59.10102954311522,
+      "r2_peak_util": 99.97207503942607,
+      "energy_std_pct": 0.009344343482497125
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "days": 30,
+    "load": 2.5,
+    "seeds": [
+      42,
+      137,
+      271,
+      500,
+      999
+    ]
+  },
+  "results": {
+    "nominal": {
+      "energy_kwh_day": 4115.469324752186,
+      "co2e_kg_day": 1483.8401949968797,
+      "peak_temp": 83.81287344637963,
+      "hotspot_min_day": 667.5333333333333,
+      "sla_miss_pct": 0.0,
+      "sla_miss_batch_pct": 0.0,
+      "thermal_viol_pct": 22.50462962962963,
+      "mean_util_pct": 55.6542030180424
+    },
+    "hf_plant": {
+      "energy_kwh_day": 4115.469324752186,
+      "co2e_kg_day": 1483.8401949968795,
+      "peak_temp": 83.77234865646878,
+      "hotspot_min_day": 432.7,
+      "sla_miss_pct": 0.0,
+      "sla_miss_batch_pct": 0.0,
+      "thermal_viol_pct": 19.618055555555557,
+      "mean_util_pct": 55.6542030180424
+    },
+    "heavy_gauss": {
+      "energy_kwh_day": 4134.805851405851,
+      "co2e_kg_day": 1491.811177417851,
+      "peak_temp": 83.84050032768566,
+      "hotspot_min_day": 746.2666666666667,
+      "sla_miss_pct": 0.5488523317337437,
+      "sla_miss_batch_pct": 0.0,
+      "thermal_viol_pct": 26.256944444444443,
+      "mean_util_pct": 56.560786111954535
+    },
+    "heavy_cantelli": {
+      "energy_kwh_day": 4134.805851405851,
+      "co2e_kg_day": 1491.811177417851,
+      "peak_temp": 83.84050032768566,
+      "hotspot_min_day": 746.2666666666667,
+      "sla_miss_pct": 0.5488523317337437,
+      "sla_miss_batch_pct": 0.0,
+      "thermal_viol_pct": 26.256944444444443,
+      "mean_util_pct": 56.560786111954535
+    },
+    "bimodal_gauss": {
+      "energy_kwh_day": 4134.572133240887,
+      "co2e_kg_day": 1490.7292180517932,
+      "peak_temp": 83.82606922838973,
+      "hotspot_min_day": 655.8,
+      "sla_miss_pct": 0.5808959309981903,
+      "sla_miss_batch_pct": 0.0,
+      "thermal_viol_pct": 24.22685185185185,
+      "mean_util_pct": 56.55534404141545
+    },
+    "bimodal_cantelli": {
+      "energy_kwh_day": 4134.572133240887,
+      "co2e_kg_day": 1490.7292180517932,
+      "peak_temp": 83.82606922838973,
+      "hotspot_min_day": 655.8,
+      "sla_miss_pct": 0.5808959309981903,
+      "sla_miss_batch_pct": 0.0,
+      "thermal_viol_pct": 24.22685185185185,
+      "mean_util_pct": 56.55534404141545
+    }
+  }
+}

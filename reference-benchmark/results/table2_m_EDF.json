@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "days": 30,
+    "load": 2.5,
+    "seeds": [
+      42,
+      137,
+      271,
+      500,
+      999
+    ],
+    "tag": "m_EDF"
+  },
+  "results": {
+    "EDF": {
+      "energy_kwh_day": 4080.812346942852,
+      "co2e_kg_day": 1479.7772554024175,
+      "peak_temp": 82.70449887121134,
+      "hotspot_min_day": 56.03333333333333,
+      "sla_miss_pct": 0.0,
+      "sla_miss_batch_pct": 0.0,
+      "p95_queue_s": 0,
+      "overhead_s": 0.9,
+      "thermal_viol_pct": 0.13657407407407407,
+      "jobs": 1386626.8,
+      "mean_util_pct": 53.01620382804219,
+      "peak_util_pct": 97.95014230530712,
+      "r0_mean_util": 53.02413087713602,
+      "r0_peak_util": 99.45477589302834,
+      "r1_mean_util": 52.96984160373234,
+      "r1_peak_util": 99.46384444500536,
+      "r2_mean_util": 53.05463900325827,
+      "r2_peak_util": 99.48936400385122,
+      "energy_std_pct": 0.02637703138639952
+    }
+  }
+}

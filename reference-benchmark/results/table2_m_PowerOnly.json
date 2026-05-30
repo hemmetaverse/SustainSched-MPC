@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "days": 30,
+    "load": 2.5,
+    "seeds": [
+      42,
+      137,
+      271,
+      500,
+      999
+    ],
+    "tag": "m_PowerOnly"
+  },
+  "results": {
+    "PowerOnly": {
+      "energy_kwh_day": 4050.5638291294813,
+      "co2e_kg_day": 1466.2906968024058,
+      "peak_temp": 88.16940906567504,
+      "hotspot_min_day": 1434.9666666666667,
+      "sla_miss_pct": 0.0,
+      "sla_miss_batch_pct": 0.0,
+      "p95_queue_s": 0,
+      "overhead_s": 1.4,
+      "thermal_viol_pct": 99.59722222222221,
+      "jobs": 1386626.8,
+      "mean_util_pct": 53.067338114286684,
+      "peak_util_pct": 98.87154206201637,
+      "r0_mean_util": 53.145275861062395,
+      "r0_peak_util": 99.85287827066668,
+      "r1_mean_util": 53.04375119219411,
+      "r1_peak_util": 99.81978454977308,
+      "r2_mean_util": 53.01298728960358,
+      "r2_peak_util": 99.8266274706592,
+      "energy_std_pct": 0.14577945517203983
+    }
+  }
+}

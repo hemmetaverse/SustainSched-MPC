@@ -1,0 +1,42 @@
+============================================================================== 
+TABLE 2  (LaTeX rows, energy kWh/d | CO2e kg/d | peakT C | hotspot min/d | SLA% | p95 s | ovh s)
+==============================================================================
+Deadline-First (EDF)                 & 4081 & 1480 & 82.7 & 56 & 0.00 & 0 & 0.9 \\
+Power-Only                           & 4051 & 1466 & 88.2 & 1435 & 0.00 & 0 & 1.4 \\
+Thermal-Cap                          & 4185 & 1513 & 83.8 & 505 & 0.00 & 0 & 1.2 \\
+Carbon-Only                          & 4314 & 1551 & 83.9 & 912 & 55.27 & 600 & 1.0 \\
+CICM~\cite{ref-radovanovic21}        & 4064 & 1473 & 88.2 & 1435 & 3.45 & 900 & 1.0 \\
+HUNTER~\cite{ref-tuli21}             & 4072 & 1472 & 85.6 & 86 & 0.00 & 0 & 1.7 \\
+\textbf{SustainSched-MPC}            & 4115 & 1484 & 83.8 & 668 & 0.00 & 600 & 2.3 \\
+
+-- SustainSched-MPC vs EDF --
+  energy -0.8%  CO2e -0.3%  hotspot -1091.3%  peakT -1.1C  SLA +0.00pp
+
+-- best (lowest) per metric, honest win/tie/loss --
+  energy   winner: PowerOnly           (4050.56)
+  CO2e     winner: PowerOnly           (1466.29)
+  peakT    winner: EDF                 (82.70)
+  hotspot  winner: EDF                 (56.03)
+  SLA(s2)  winner: EDF                 (0.00)
+
+============================================================================== 
+UTILIZATION (R1.5), per-region mean/peak %, taken from SustainSched-MPC run
+==============================================================================
+  US-West     mean=52.1%  peak=99.9%
+  EU-Central  mean=59.4%  peak=99.9%
+  AS-East     mean=55.4%  peak=99.9%
+  Cluster     mean=55.7%  peak=99.9%
+
+============================================================================== 
+VALIDATION (R2.3) — SustainSched-MPC under controller!=plant
+==============================================================================
+V2 (higher-fidelity, spatially-coupled thermal plant):
+  nominal   peakT=83.8  hotspot=668  thv=22.50  energy=4115  CO2=1484
+  hf_plant  peakT=83.8  hotspot=433  thv=19.62  energy=4115  CO2=1484
+V3 (runtime distribution mismatch, Gaussian-margin vs Cantelli):
+  heavy_gauss       sla2=0.55%  sla1=0.00%  hotspot=746
+  heavy_cantelli    sla2=0.55%  sla1=0.00%  hotspot=746
+  bimodal_gauss     sla2=0.58%  sla1=0.00%  hotspot=656
+  bimodal_cantelli  sla2=0.58%  sla1=0.00%  hotspot=656
+
+wrote results/table2_final.json

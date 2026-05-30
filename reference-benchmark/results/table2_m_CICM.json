@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "days": 30,
+    "load": 2.5,
+    "seeds": [
+      42,
+      137,
+      271,
+      500,
+      999
+    ],
+    "tag": "m_CICM"
+  },
+  "results": {
+    "CICM": {
+      "energy_kwh_day": 4064.205736905973,
+      "co2e_kg_day": 1473.4312457641192,
+      "peak_temp": 88.16908773300551,
+      "hotspot_min_day": 1435.2333333333333,
+      "sla_miss_pct": 3.4529582911234,
+      "sla_miss_batch_pct": 0.0,
+      "p95_queue_s": 900,
+      "overhead_s": 1.0,
+      "thermal_viol_pct": 98.56944444444444,
+      "jobs": 1386626.8,
+      "mean_util_pct": 52.963282829413515,
+      "peak_util_pct": 99.35478775271727,
+      "r0_mean_util": 52.93011228589294,
+      "r0_peak_util": 99.93818155392947,
+      "r1_mean_util": 52.92289286771299,
+      "r1_peak_util": 99.93715948659998,
+      "r2_mean_util": 53.03684333463471,
+      "r2_peak_util": 99.92158062663309,
+      "energy_std_pct": 0.030673301391718266
+    }
+  }
+}

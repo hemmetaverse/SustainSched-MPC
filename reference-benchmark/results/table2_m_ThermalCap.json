@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "days": 30,
+    "load": 2.5,
+    "seeds": [
+      42,
+      137,
+      271,
+      500,
+      999
+    ],
+    "tag": "m_ThermalCap"
+  },
+  "results": {
+    "ThermalCap": {
+      "energy_kwh_day": 4185.159527568709,
+      "co2e_kg_day": 1513.4682330348944,
+      "peak_temp": 83.816380837571,
+      "hotspot_min_day": 504.6666666666667,
+      "sla_miss_pct": 0.0,
+      "sla_miss_batch_pct": 0.0,
+      "p95_queue_s": 0,
+      "overhead_s": 1.2,
+      "thermal_viol_pct": 17.97222222222222,
+      "jobs": 1386610.2,
+      "mean_util_pct": 59.236100334435136,
+      "peak_util_pct": 99.86859518571957,
+      "r0_mean_util": 58.005368888952724,
+      "r0_peak_util": 99.93488378961361,
+      "r1_mean_util": 59.27076231312376,
+      "r1_peak_util": 99.947182385241,
+      "r2_mean_util": 60.43216980122846,
+      "r2_peak_util": 99.9257154154118,
+      "energy_std_pct": 0.10462089996982113
+    }
+  }
+}

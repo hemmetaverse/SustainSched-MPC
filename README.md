@@ -75,6 +75,16 @@ python -m pytest tests/
 - `src/data_ingestion.py`: Helper script bridging API access to historic carbon signals.
 - `tests/`: Collection of automated test scripts executing unit and end-to-end integration validations.
 
+## 🔬 Reference Benchmark (reviewer-response artifact)
+
+The [`reference-benchmark/`](reference-benchmark) directory contains a **self-contained,
+dependency-free** reference implementation (Python standard library only — no solver) added for the
+*Array* revision. It provides faithful reimplementations of two published state-of-the-art baselines
+(**CICM**, Radovanovic et al. 2021; **HUNTER**, Tuli et al. 2021), the full seven-scheduler
+comparison matrix, and the controller-vs-higher-fidelity-plant (V2) and runtime-distribution-mismatch
+(V3) validation experiments, all reproducible with `python3` alone. It **complements** the primary
+MILP scheduler in [`src/`](src); see [`reference-benchmark/README.md`](reference-benchmark/README.md).
+
 ## 📜 Citation
 This codebase was developed as the core software representation of the methodology mapped out in the paper:
 *Risk-Constrained Power-, Carbon-, and Thermal-Aware Scheduling for Sustainable Distributed Computing.*

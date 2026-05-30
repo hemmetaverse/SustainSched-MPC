@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "days": 30,
+    "load": 2.5,
+    "seeds": [
+      42,
+      137,
+      271,
+      500,
+      999
+    ],
+    "tag": "m_SustainSchedMPC"
+  },
+  "results": {
+    "SustainSchedMPC": {
+      "energy_kwh_day": 4115.469324752186,
+      "co2e_kg_day": 1483.8401949968797,
+      "peak_temp": 83.81287344637963,
+      "hotspot_min_day": 667.5333333333333,
+      "sla_miss_pct": 0.0,
+      "sla_miss_batch_pct": 0.0,
+      "p95_queue_s": 600,
+      "overhead_s": 2.3,
+      "thermal_viol_pct": 22.50462962962963,
+      "jobs": 1386613.4,
+      "mean_util_pct": 55.6542030180424,
+      "peak_util_pct": 99.87284643574618,
+      "r0_mean_util": 52.126794093507826,
+      "r0_peak_util": 99.93261180049113,
+      "r1_mean_util": 59.42533314182601,
+      "r1_peak_util": 99.94099720402012,
+      "r2_mean_util": 55.410481818793166,
+      "r2_peak_util": 99.94947661539392,
+      "energy_std_pct": 0.045732586347011245
+    }
+  }
+}

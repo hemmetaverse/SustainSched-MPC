@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "days": 30,
+    "load": 2.5,
+    "seeds": [
+      42,
+      137,
+      271,
+      500,
+      999
+    ],
+    "tag": "m_HUNTER"
+  },
+  "results": {
+    "HUNTER": {
+      "energy_kwh_day": 4071.611239685592,
+      "co2e_kg_day": 1472.2678148115297,
+      "peak_temp": 85.55347362391664,
+      "hotspot_min_day": 86.4,
+      "sla_miss_pct": 0.0,
+      "sla_miss_batch_pct": 0.0,
+      "p95_queue_s": 0,
+      "overhead_s": 1.7,
+      "thermal_viol_pct": 1.0208333333333333,
+      "jobs": 1386626.8,
+      "mean_util_pct": 53.38149555268247,
+      "peak_util_pct": 99.63644041305497,
+      "r0_mean_util": 54.243100798366264,
+      "r0_peak_util": 99.886299622556,
+      "r1_mean_util": 53.41643858742269,
+      "r1_peak_util": 99.74773709958416,
+      "r2_mean_util": 52.48494727225876,
+      "r2_peak_util": 99.56165705499278,
+      "energy_std_pct": 0.06698226221259773
+    }
+  }
+}
