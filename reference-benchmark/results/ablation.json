@@ -1,0 +1,44 @@
+{
+  "Full": {
+    "co2": 1483,
+    "hot": 666,
+    "peak": 83.8,
+    "sla": 0.0,
+    "energy": 4112
+  },
+  "nothermal": {
+    "co2": 1483,
+    "hot": 666,
+    "peak": 83.8,
+    "sla": 0.0,
+    "energy": 4112
+  },
+  "nocarbon": {
+    "co2": 1480,
+    "hot": 730,
+    "peak": 83.6,
+    "sla": 0.0,
+    "energy": 4104
+  },
+  "nocc": {
+    "co2": 1483,
+    "hot": 666,
+    "peak": 83.8,
+    "sla": 0.0,
+    "energy": 4112
+  },
+  "nodvfs": {
+    "co2": 1471,
+    "hot": 372,
+    "peak": 87.4,
+    "sla": 0.0,
+    "energy": 4089
+  },
+  "nomig": {
+    "co2": 1483,
+    "hot": 666,
+    "peak": 83.8,
+    "sla": 0.0,
+    "energy": 4112
+  }
+}

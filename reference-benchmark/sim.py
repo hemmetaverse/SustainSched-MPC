@@ -145,9 +145,10 @@ def gen_arrivals(rng,t,dist):
     return out
 
 class Sim:
-    def __init__(self, method, seed, days=30, plant="nominal", runtime_dist="lognormal",
+    def __init__(self, method, seed, days=30, plant="nominal", runtime_dist="lognormal", ablate=None,
                  margin="gauss", hf_coupling=0.15, hf_sub=5):
         self.method=method; self.arng=random.Random(seed*7+1)
+        self.ablate=ablate
         self.days=days; self.n=days*SLOTS_DAY
         self.plant=plant; self.runtime_dist=runtime_dist; self.margin=margin
         self.hf_coupling=hf_coupling; self.hf_sub=hf_sub
@@ -160,7 +161,9 @@ class Sim:
         self.cicm_vcc=None
 
     def Zc(self,cls): return (CANTELLI if self.margin=="cantelli" else Z)[cls]
-    def d_safe(self,j): return j.deadline - j.tau_bar*(1+self.Zc(j.cls)*RT_CV[j.cls])
+    def d_safe(self,j):
+        if self.ablate=='nocc': return float(j.deadline)
+        return j.deadline - j.tau_bar*(1+self.Zc(j.cls)*RT_CV[j.cls])
     def carbon_now(self,r,t): return carbon_profile(r,(t%SLOTS_DAY)*SLOT_MIN/60.0)
     def hosts_in(self,r): return range(r*HPR,(r+1)*HPR)
     def can_fit(self,i,j): return self.hosts[i].used+j.u<=K_CPU
@@ -267,7 +270,7 @@ class Sim:
     def _do_place(self, i, j, t):
         r=i//HPR; lat=MIG_LAT if r!=j.region else 0
         if r!=j.region: self.mig+=1
-        freq=F_LOW if self.hosts[i].T_eq(j.u)>T_CAP-3 else F_NOM
+        freq=F_NOM if self.ablate=='nodvfs' else (F_LOW if self.hosts[i].T_eq(j.u)>T_CAP-3 else F_NOM)
         self.place(i,j,t,freq,lat)
 
     def _pack_carbon_order(self, j, t, regions, cap=True, cap_temp=T_CAP):
@@ -367,7 +370,7 @@ class Sim:
         self.pending.sort(key=lambda j:self.d_safe(j)); rest=[]
         for j in self.pending:
             ds=self.d_safe(j)
-            if j.cls==1 and t<ds-j.tau_bar and t<j.arrival+DEFER[j.cls]:    # only defer batch if SLA-safe
+            if self.ablate!='nocarbon' and j.cls==1 and t<ds-j.tau_bar and t<j.arrival+DEFER[j.cls]:    # only defer batch if SLA-safe
                 cnow=min(self.carbon_now(r,t) for r in range(3))
                 cb=min(min(self.carbon_now(r,s) for r in range(3)) for s in range(t,min(int(ds),t+DEFER[j.cls])+1))
                 if cnow>cb*1.03: rest.append(j); continue
