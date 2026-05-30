@@ -1,0 +1,103 @@
+{
+  "meta": {
+    "days": 4,
+    "load": 3.0,
+    "seeds": [
+      42
+    ],
+    "tag": "p3"
+  },
+  "results": {
+    "EDF": {
+      "energy_kwh_day": 4236.145876306714,
+      "co2e_kg_day": 1526.5721849769457,
+      "peak_temp": 88.14259641570362,
+      "hotspot_min_day": 548.75,
+      "sla_miss_pct": 0.0,
+      "sla_miss_batch_pct": 0.0,
+      "p95_queue_s": 0,
+      "overhead_s": 0.9,
+      "thermal_viol_pct": 34.548611111111114,
+      "jobs": 221407,
+      "energy_std_pct": 0.0
+    },
+    "PowerOnly": {
+      "energy_kwh_day": 4253.689858511032,
+      "co2e_kg_day": 1537.9006887052722,
+      "peak_temp": 88.17620816364666,
+      "hotspot_min_day": 1405.0,
+      "sla_miss_pct": 0.0,
+      "sla_miss_batch_pct": 0.0,
+      "p95_queue_s": 0,
+      "overhead_s": 1.4,
+      "thermal_viol_pct": 97.22222222222223,
+      "jobs": 221407,
+      "energy_std_pct": 0.0
+    },
+    "ThermalCap": {
+      "energy_kwh_day": 4649.401208576245,
+      "co2e_kg_day": 1694.3764397679097,
+      "peak_temp": 83.88094353538503,
+      "hotspot_min_day": 1048.75,
+      "sla_miss_pct": 0.0,
+      "sla_miss_batch_pct": 0.0,
+      "p95_queue_s": 600,
+      "overhead_s": 1.2,
+      "thermal_viol_pct": 65.45138888888889,
+      "jobs": 216765,
+      "energy_std_pct": 0.0
+    },
+    "CarbonOnly": {
+      "energy_kwh_day": 4277.400677196365,
+      "co2e_kg_day": 1506.9662804178042,
+      "peak_temp": 88.1751932452187,
+      "hotspot_min_day": 1375.0,
+      "sla_miss_pct": 55.13983710624027,
+      "sla_miss_batch_pct": 22.36460624651047,
+      "p95_queue_s": 600,
+      "overhead_s": 1.0,
+      "thermal_viol_pct": 86.71875,
+      "jobs": 215451,
+      "energy_std_pct": 0.0
+    },
+    "CICM": {
+      "energy_kwh_day": 4193.162085776637,
+      "co2e_kg_day": 1515.0141240721903,
+      "peak_temp": 88.16863085038968,
+      "hotspot_min_day": 1405.0,
+      "sla_miss_pct": 13.413504631012847,
+      "sla_miss_batch_pct": 0.0,
+      "p95_queue_s": 1500,
+      "overhead_s": 1.0,
+      "thermal_viol_pct": 97.22222222222223,
+      "jobs": 221407,
+      "energy_std_pct": 0.0
+    },
+    "HUNTER": {
+      "energy_kwh_day": 4627.353537314781,
+      "co2e_kg_day": 1687.9289611246593,
+      "peak_temp": 88.2003368197722,
+      "hotspot_min_day": 1027.5,
+      "sla_miss_pct": 0.0,
+      "sla_miss_batch_pct": 0.0,
+      "p95_queue_s": 600,
+      "overhead_s": 1.7,
+      "thermal_viol_pct": 64.0625,
+      "jobs": 217985,
+      "energy_std_pct": 0.0
+    },
+    "SustainSchedMPC": {
+      "energy_kwh_day": 4759.93041262551,
+      "co2e_kg_day": 1736.4884254617864,
+      "peak_temp": 83.8787433928428,
+      "hotspot_min_day": 1183.75,
+      "sla_miss_pct": 0.0,
+      "sla_miss_batch_pct": 0.0,
+      "p95_queue_s": 600,
+      "overhead_s": 2.3,
+      "thermal_viol_pct": 77.51736111111111,
+      "jobs": 213824,
+      "energy_std_pct": 0.0
+    }
+  }
+}
